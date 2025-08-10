@@ -30,7 +30,7 @@ set -e
 
 export GITHUB_SOURCE="v1.1.1"
 export SCRIPT_RELEASE="v1.1.1"
-export GITHUB_BASE_URL="https://raw.githubusercontent.com/pterodactyl-installer/pterodactyl-installer"
+export GITHUB_BASE_URL="https://raw.githubusercontent.com/luxisdevvv/pterodactyl-installer-tr"
 
 LOG_PATH="/var/log/pterodactyl-installer.log"
 
@@ -43,7 +43,7 @@ fi
 
 # lib.sh dosyasını her zaman silip yeniden indir
 [ -f /tmp/lib.sh ] && rm -rf /tmp/lib.sh
-curl -sSL -o /tmp/lib.sh "$GITHUB_BASE_URL"/master/lib/lib.sh
+curl -sSL -o /tmp/lib.sh "$GITHUB_BASE_URL"/main/lib.sh
 # shellcheck source=lib/lib.sh
 source /tmp/lib.sh
 
@@ -60,7 +60,7 @@ execute() {
     if [[ "$CONFIRM" =~ [YyEe] ]]; then
       execute "$2"
     else
-      error "$2 kurulumu iptal edildi."
+      error "$2 kurulum iptal edildi."
       exit 1
     fi
   fi
@@ -74,8 +74,6 @@ while [ "$done" == false ]; do
     "Paneli kur"
     "Wings kur"
     "Aynı makinede hem panel hem wings kur (önce panel, sonra wings)"
-    # "Panel veya wings’i kaldır\n"
-
     "Paneli canary (geliştirme) sürümü ile kur (kararsız olabilir!)"
     "Wings’i canary (geliştirme) sürümü ile kur (kararsız olabilir!)"
     "Aynı makinede hem [3] hem [4] kur (önce panel, sonra wings)"
@@ -86,8 +84,6 @@ while [ "$done" == false ]; do
     "panel"
     "wings"
     "panel;wings"
-    # "uninstall"
-
     "panel_canary"
     "wings_canary"
     "panel_canary;wings_canary"
@@ -110,5 +106,4 @@ while [ "$done" == false ]; do
   [[ " ${valid_input[*]} " =~ ${action} ]] && done=true && IFS=";" read -r i1 i2 <<<"${actions[$action]}" && execute "$i1" "$i2"
 done
 
-# lib.sh dosyasını kaldır, böylece script tekrar çalıştığında en günceli indirilecek
 rm -rf /tmp/lib.sh
